@@ -8,7 +8,7 @@ interface TaskContextType {
   addTask: (text: string) => void;
   removeTask: (id: string) => void;
   toggleComplete: (id: string) => void;
-  setPriorityTask: (id: string) => void;
+  markAsPriority: (id: string) => void; // Renamed from setPriorityTask to avoid conflict
   moveTaskUp: (id: string) => void;
   moveTaskDown: (id: string) => void;
   clearAllTasks: () => void;
@@ -124,7 +124,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     );
   };
 
-  const setPriorityTask = (id: string) => {
+  const markAsPriority = (id: string) => { // Renamed from setPriorityTask
     setTasks(prev => 
       prev.map(task => ({
         ...task,
@@ -162,7 +162,7 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       addTask,
       removeTask,
       toggleComplete,
-      setPriorityTask,
+      markAsPriority, // Renamed from setPriorityTask
       moveTaskUp,
       moveTaskDown,
       clearAllTasks,

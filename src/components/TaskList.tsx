@@ -8,7 +8,7 @@ import { Check, ArrowUp, ArrowDown, Trash } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const TaskItem = ({ task }: { task: Task }) => {
-  const { toggleComplete, removeTask, setPriorityTask, moveTaskUp, moveTaskDown } = useTasks();
+  const { toggleComplete, removeTask, markAsPriority, moveTaskUp, moveTaskDown } = useTasks();
 
   return (
     <div 
@@ -75,7 +75,7 @@ const TaskItem = ({ task }: { task: Task }) => {
           variant="outline"
           size="sm"
           className="ml-2 text-xs bg-transparent hover:bg-focusBlue hover:text-white border-focusBlue text-focusBlue"
-          onClick={() => setPriorityTask(task.id)}
+          onClick={() => markAsPriority(task.id)}
         >
           Set Focus
         </Button>
