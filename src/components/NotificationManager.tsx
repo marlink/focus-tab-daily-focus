@@ -68,11 +68,11 @@ const NotificationManager = () => {
       timerRef.current = setInterval(() => {
         const priorityTask = tasks.find(task => task.isPriority);
         if (priorityTask) {
+          // Remove the 'icon' property as it's not supported in the Toast type
           toast({
             title: "Focus Reminder",
             description: `Focus on: ${priorityTask.text}`,
             duration: 5000,
-            icon: <BellRing className="h-4 w-4" />,
           });
         }
       }, intervalMs);
