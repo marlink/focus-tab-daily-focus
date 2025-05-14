@@ -81,3 +81,30 @@
 .glass-panel {
   @apply bg-white/30 dark:bg-black/30 backdrop-blur-md rounded-lg border border-white/20 dark:border-white/10 shadow-xl;
 }
+
+/* Enhanced animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Improved transitions */
+.transition-smooth {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Pulse effect for priority tasks */
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(51, 195, 240, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(51, 195, 240, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(51, 195, 240, 0); }
+}
+
+.pulse-focus {
+  animation: pulse-border 2s infinite;
+}

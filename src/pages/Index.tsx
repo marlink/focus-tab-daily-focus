@@ -21,11 +21,13 @@ const Dashboard = () => {
       <Background mode={settings.backgroundMode} colorTheme={settings.backgroundColor} />
       
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center">
-        <Clock />
+        <div className="floating">
+          <Clock />
+        </div>
         
         <div 
-          className={`transition-all duration-300 ease-in-out transform ${
-            showTaskList ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+          className={`transition-smooth transform ${
+            showTaskList ? 'opacity-100 scale-100 mt-8' : 'opacity-0 scale-95 pointer-events-none'
           }`}
         >
           <TaskList />
@@ -39,12 +41,12 @@ const Dashboard = () => {
         variant="outline" 
         size="icon"
         onClick={() => setShowTaskList(!showTaskList)}
-        className="fixed bottom-6 left-6 rounded-full h-10 w-10 glass-panel z-20"
+        className="fixed bottom-6 left-6 rounded-full h-12 w-12 glass-panel z-20 shadow-lg"
       >
         {showTaskList ? (
-          <X size={20} />
+          <X size={22} />
         ) : (
-          <List size={20} />
+          <List size={22} />
         )}
       </Button>
       
