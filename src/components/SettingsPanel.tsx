@@ -15,6 +15,13 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Settings } from 'lucide-react';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const SettingsPanel = () => {
   const { settings, updateSettings, resetSettings } = useSettings();
@@ -208,6 +215,30 @@ const SettingsPanel = () => {
             <p className="text-xs text-muted-foreground">
               Set a daily time to be reminded of your focus tasks.
             </p>
+          </div>
+
+          {/* NEW: Reminder Interval */}
+          <div className="space-y-2">
+            <Label htmlFor="reminder-interval">Recurring Reminders</Label>
+            <Select
+              value={tempSettings.reminderInterval}
+              onValueChange={(value) => 
+                setTempSettings(prev => ({ ...prev, reminderInterval: value as 'off' | '2' | '5' | '10' | '15' | '20' | '30' }))
+              }
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Set reminder interval" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="off">Off</SelectItem>
+                <SelectItem value="2">Every 2 minutes</SelectItem>
+                <SelectItem value="5">Every 5 minutes</SelectItem>
+                <SelectItem value="10">Every 10 minutes</SelectItem>
+                <SelectItem value="15">Every 15 minutes</SelectItem>
+                <SelectItem value="20">Every 20 minutes</SelectItem>
+                <SelectItem value="30">Every 30 minutes</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 

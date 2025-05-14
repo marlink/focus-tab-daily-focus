@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import { Settings } from '../lib/types';
 
@@ -15,7 +14,8 @@ const defaultSettings: Settings = {
   showClock: true,
   taskPosition: 'top-right',
   fontSize: 'medium',
-  reminderTime: null
+  reminderTime: null,
+  reminderInterval: 'off'
 };
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);

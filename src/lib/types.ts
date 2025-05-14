@@ -14,4 +14,5 @@ export interface Settings {
   taskPosition: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
   fontSize: 'small' | 'medium' | 'large';
   reminderTime: string | null;
+  reminderInterval: 'off' | '2' | '5' | '10' | '15' | '20' | '30';
 }

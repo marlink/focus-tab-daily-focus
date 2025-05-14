@@ -7,6 +7,7 @@ import TaskList from '@/components/TaskList';
 import PriorityTask from '@/components/PriorityTask';
 import Clock from '@/components/Clock';
 import SettingsPanel from '@/components/SettingsPanel';
+import NotificationManager from '@/components/NotificationManager';
 import { Button } from '@/components/ui/button';
 import { List, X } from 'lucide-react';
 import { useSettings } from '@/contexts/SettingsContext';
@@ -32,6 +33,7 @@ const Dashboard = () => {
       </div>
       
       <PriorityTask />
+      <NotificationManager />
       
       <Button
         variant="outline" 
