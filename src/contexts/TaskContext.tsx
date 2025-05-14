@@ -1,7 +1,22 @@
-
 import { createContext, useContext, useState, useEffect } from 'react';
 import { Task } from '../lib/types';
 import { toast } from '@/components/ui/use-toast';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 interface TaskContextType {
   tasks: Task[];
@@ -22,6 +37,9 @@ const TaskContext = createContext<TaskContextType | undefined>(undefined);
 export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [priorityTask, setPriorityTask] = useState<Task | null>(null);
+  const [showNotificationDialog, setShowNotificationDialog] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [reminderInterval, setReminderInterval] = useState<string>('off');
 
   // Load tasks from local storage on initial load
   useEffect(() => {
@@ -125,12 +143,44 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const markAsPriority = (id: string) => { // Renamed from setPriorityTask
+    setSelectedTaskId(id);
+    setShowNotificationDialog(true);
+  };
+  
+  const confirmPriority = () => {
+    if (!selectedTaskId) return;
+    
     setTasks(prev => 
       prev.map(task => ({
         ...task,
-        isPriority: task.id === id
+        isPriority: task.id === selectedTaskId
       }))
     );
+    
+    // Update settings with new reminder interval
+    if (reminderInterval !== 'off') {
+      const settingsString = localStorage.getItem('focustab-settings');
+      if (settingsString) {
+        const settings = JSON.parse(settingsString);
+        settings.reminderInterval = reminderInterval;
+        localStorage.setItem('focustab-settings', JSON.stringify(settings));
+      }
+      
+      toast({
+        title: "Focus Task Set",
+        description: `Reminders set for every ${reminderInterval} minutes`,
+        duration: 3000,
+      });
+    }
+    
+    // Close dialog and reset state
+    setShowNotificationDialog(false);
+    setSelectedTaskId(null);
+  };
+
+  const cancelPriority = () => {
+    setShowNotificationDialog(false);
+    setSelectedTaskId(null);
   };
 
   const moveTaskUp = (id: string) => {
@@ -169,6 +219,42 @@ export const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       priorityTask
     }}>
       {children}
+      
+      <Dialog open={showNotificationDialog} onOpenChange={setShowNotificationDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Set Reminder Frequency</DialogTitle>
+          </DialogHeader>
+          
+          <div className="py-4 space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="reminder-interval">How often would you like to be reminded?</Label>
+              <Select
+                value={reminderInterval}
+                onValueChange={setReminderInterval}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Choose reminder frequency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="off">No reminders</SelectItem>
+                  <SelectItem value="2">Every 2 minutes</SelectItem>
+                  <SelectItem value="5">Every 5 minutes</SelectItem>
+                  <SelectItem value="10">Every 10 minutes</SelectItem>
+                  <SelectItem value="15">Every 15 minutes</SelectItem>
+                  <SelectItem value="20">Every 20 minutes</SelectItem>
+                  <SelectItem value="30">Every 30 minutes</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={cancelPriority}>Cancel</Button>
+            <Button onClick={confirmPriority}>Set Focus</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </TaskContext.Provider>
   );
 };
